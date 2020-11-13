@@ -4,6 +4,7 @@ import { Dropdown } from "reactstrap";
 function FetchData() {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [fork, setFork] = useState("");
 
   useEffect(() => {
     fetch("https://api.github.com/orgs/catalyst/repos")
@@ -31,6 +32,14 @@ function FetchData() {
 
   return (
     <div>
+      <select onChange={(e) => setFork(e.target.value)}>
+        <option value="">All</option>
+        <option value="true">Forked</option>
+        <option value="false">Not Forked</option>
+      </select>
+      <br />
+      <br />
+
       {repos.map((repo) => (
         <div key={repo.id}>
           <div>
