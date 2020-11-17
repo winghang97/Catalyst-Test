@@ -17,18 +17,6 @@ function FetchData() {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    fetch("https://api.github.com/orgs/catalyst/repos")
-      .then((res) => res.json())
-      .then((data) => {
-        setRepos(data);
-      })
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <div>
       {repos.map((repo) => (
