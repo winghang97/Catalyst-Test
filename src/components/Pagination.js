@@ -8,9 +8,9 @@ export const Pagination = ({ reposPerPage, totalRepos, paginate }) => {
   }
   return (
     <nav>
-      <ul className="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
+      <ul className="pagination justify-content-center mt-4">
+        <li className="page-item">
+          <a className="page-link" href="!#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -21,8 +21,8 @@ export const Pagination = ({ reposPerPage, totalRepos, paginate }) => {
             </a>
           </li>
         ))}
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
+        <li className="page-item">
+          <a className="page-link" href="!#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

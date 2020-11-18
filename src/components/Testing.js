@@ -5,25 +5,45 @@ import Pagination from "./Pagination";
 function FetchData() {
   const [repos, setRepos] = useState([]);
   const [contributors, setContributors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [reposPerPage] = useState(5);
 
   useEffect(() => {
-    const fetchRepos = async () => {
-      setLoading(true);
-      fetch("https://api.github.com/orgs/catalyst/repos")
-        .then((res) => res.json())
-        .then((data) => {
-          setRepos(data);
-          console.log(data);
-        })
-        .catch((err) => console.log(err));
-      setLoading(false);
-    };
-
-    fetchRepos();
+    fetch("https://api.github.com/orgs/catalyst/repos")
+      .then((res) => res.json())
+      .then((data) => setRepos(data))
+      .then(() => setLoading(false))
+      .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   fetch("https://api.github.com/orgs/catalyst/repos")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setRepos(data); // Data 1(repos) is received
+  //       // Now We make another API call to get Data 2 (contributors)
+  //       console.log(1);
+  //       console.log(repos[0].contributors_url);
+  //       return fetch(`${repos[0].contributors_url}`);
+  //     })
+  //     .then((res) => res.json()) // Chaining promise,handling 2nd Fetch request
+  //     .then((data2) => {
+  //       console.log(2);
+  //       console.log(data2);
+  //       setContributors(data2);
+  //     })
+  //     .then(() => {
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  // const getContributorURL = async (newURL) => {
+  //   const res = await fetch(newURL);
+  //   const data2 = await res.json();
+  //   return data2;
+  // };
 
   //Get current repos
   const indexOfLastRepo = currentPage * reposPerPage;
@@ -33,8 +53,65 @@ function FetchData() {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  //Sorting
   return (
-    <div className="container">
+    // <div className="container">
+    //   <div className="row">
+    //     {repos.length &&
+    //       repos.map((repo, i) => (
+    //         <div key={repo.id} lass="col-md">
+    //           <div>
+    //             <p className="lead">Name: {repo.name}</p>
+    //             <p>Description: {repo.description}</p>
+    //             <p>
+    //               Link: <a href="{repo.html_url}">{repo.html_url}</a>
+    //             </p>
+    //             <p>Fork: {repo.fork.toString()}</p>
+    //             <p>Star Count: {repo.stargazers_count}</p>
+    //             <p>Watchers Count: {repo.watchers_count}</p>
+    //             <p>License: {repo.license ? repo.license.name : "null"}</p>
+    //             <p>Language: {repo.language}</p>
+    //             {/* <ul>
+    //               {getContributorURL(repo.contributors_url).then(
+    //                 (newData) => newData[i].login
+    //               )}
+    //             </ul> */}
+    //           </div>
+    //         </div>
+    //       ))}
+    //   </div>
+
+    <div className="container-fluid">
+      {/* <div className="buttonContainer">
+        <div>
+          <button
+            className="btn btn-primary mycustom dropdown-toggle mr-4"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sort by{" "}
+          </button>
+
+          <div className="dropdown-menu">
+            <a
+              className="dropdown-item"
+              href="#"
+              // onClick={() => sortBy("funded")}
+            >
+              Percentage fund
+            </a>
+            <a
+              className="dropdown-item"
+              href="#"
+              // onClick={() => sortBy("backers")}
+            >
+              Number of backers
+            </a>
+          </div>
+        </div>
+      </div> */}
       <Repocard repos={currentRepo} loading={loading} />
       <Pagination
         reposPerPage={reposPerPage}
