@@ -25,7 +25,7 @@ function FetchData() {
   //       // Now We make another API call to get Data 2 (contributors)
   //       console.log(1);
   //       console.log(repos[0].contributors_url);
-  //       return fetch(`${repos[0].contributors_url}`);
+  //       return fetch(repos[0].contributors_url);
   //     })
   //     .then((res) => res.json()) // Chaining promise,handling 2nd Fetch request
   //     .then((data2) => {
@@ -39,12 +39,6 @@ function FetchData() {
   //     .catch((err) => console.log(err));
   // }, []);
 
-  // const getContributorURL = async (newURL) => {
-  //   const res = await fetch(newURL);
-  //   const data2 = await res.json();
-  //   return data2;
-  // };
-
   //Get current repos
   const indexOfLastRepo = currentPage * reposPerPage;
   const indedxOfFirstRepo = indexOfLastRepo - reposPerPage;
@@ -55,32 +49,6 @@ function FetchData() {
 
   //Sorting
   return (
-    // <div className="container">
-    //   <div className="row">
-    //     {repos.length &&
-    //       repos.map((repo, i) => (
-    //         <div key={repo.id} lass="col-md">
-    //           <div>
-    //             <p className="lead">Name: {repo.name}</p>
-    //             <p>Description: {repo.description}</p>
-    //             <p>
-    //               Link: <a href="{repo.html_url}">{repo.html_url}</a>
-    //             </p>
-    //             <p>Fork: {repo.fork.toString()}</p>
-    //             <p>Star Count: {repo.stargazers_count}</p>
-    //             <p>Watchers Count: {repo.watchers_count}</p>
-    //             <p>License: {repo.license ? repo.license.name : "null"}</p>
-    //             <p>Language: {repo.language}</p>
-    //             {/* <ul>
-    //               {getContributorURL(repo.contributors_url).then(
-    //                 (newData) => newData[i].login
-    //               )}
-    //             </ul> */}
-    //           </div>
-    //         </div>
-    //       ))}
-    //   </div>
-
     <div className="container-fluid">
       {/* <div className="buttonContainer">
         <div>
@@ -112,6 +80,7 @@ function FetchData() {
           </div>
         </div>
       </div> */}
+
       <Repocard repos={currentRepo} loading={loading} />
       <Pagination
         reposPerPage={reposPerPage}

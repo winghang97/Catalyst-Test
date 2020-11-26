@@ -1,9 +1,12 @@
 import React from "react";
+import moment from "moment";
 
 const RepoCard = ({ repos, loading }) => {
   if (loading) {
     return <h2>Loading...</h2>;
   }
+  console.log(`${repos[0].updated_at}`);
+  console.log(moment("${repos[0].updated_at.toString()"));
 
   return (
     <table className="table table-hover table-responsive">
@@ -37,7 +40,7 @@ const RepoCard = ({ repos, loading }) => {
             <td>{repo.language}</td>
             <td></td>
             <td>{repo.created_at}</td>
-            <td>{repo.updated_at}</td>
+            {/* <td>{moment(repo.updated_at)}</td> */}
           </tr>
         ))}
       </tbody>
