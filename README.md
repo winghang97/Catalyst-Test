@@ -6,9 +6,8 @@
 2. Add Contributors list
 3. Fix to display date/time format as dd/mm/yyyy
 4. Fix deployment pagination error
-5.
 
 # Things to add:
 
-1. Sort
-2. Filter
+1. ~~Sort~~
+2. ~~Filter~~
