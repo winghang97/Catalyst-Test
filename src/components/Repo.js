@@ -1,53 +1,71 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { SelectColumnFilter } from "./Filter";
 import Table from "./Table";
+import { Card, CardText, CardBody, CardTitle } from "reactstrap";
 
 function FetchData() {
+  const renderRowSubComponent = (row) => {
+    const {
+      name,
+      description,
+      html_url,
+      stargazers_count,
+      watchers_count,
+      license,
+      language,
+    } = row.original;
+    return (
+      <Card style={{ width: "40rem", margin: "0 auto" }}>
+        <CardBody>
+          <CardTitle>
+            <strong>{`${name}`} </strong>
+          </CardTitle>
+          <CardText>
+            <strong>Description</strong>: {description} <br />
+            <strong>GitHub URL</strong>: <a href={html_url}>{html_url}</a>
+            <br />
+            <strong>Star Count</strong>: {stargazers_count} <br />
+            <strong>Watchers Count</strong>: {watchers_count} <br />
+            <strong>License</strong>: {license.name} <br />
+            <strong>Language</strong>: {language} <br />
+          </CardText>
+        </CardBody>
+      </Card>
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
+        Header: () => null,
+        id: "expander", // 'id' is required
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+            {row.isExpanded ? "👇" : "👉"}
+          </span>
+        ),
+      },
+      {
         Header: "Name",
         accessor: "name",
-      },
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "GitHub URL",
-        accessor: "html_url",
+        disableFilters: true,
       },
       {
         id: "fork",
         Header: "Forked",
         accessor: (d) => d.fork.toString(),
-      },
-      {
-        Header: "Star Count",
-        accessor: "stargazers_count",
-      },
-      {
-        Header: "Watchers Count",
-        accessor: "watchers_count",
-      },
-      {
-        Header: "License",
-        accessor: "license.name",
-      },
-      {
-        Header: "Language",
-        accessor: "language",
-      },
-      {
-        Header: "Top 5 Contributors",
-        accessor: "topcontributor",
+        Filter: SelectColumnFilter,
+        filter: "equals",
       },
       {
         Header: "Created Time",
         accessor: "created_at",
+        disableFilters: true,
       },
       {
         Header: "Updated Time",
         accessor: "updated_at",
+        disableFilters: true,
       },
     ],
     []
@@ -67,7 +85,11 @@ function FetchData() {
 
   return (
     <div className="container-fluid">
-      <Table columns={columns} data={repos} filterable />
+      <Table
+        columns={columns}
+        data={repos}
+        renderRowSubComponent={renderRowSubComponent}
+      />
     </div>
   );
 }

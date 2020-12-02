@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import { useFilters, useTable, useSortBy, usePagination } from "react-table";
+import React, { useState, Fragment } from "react";
+import {
+  useFilters,
+  useTable,
+  useSortBy,
+  usePagination,
+  useExpanded,
+} from "react-table";
+import { Filter, DefaultColumnFilter } from "./Filter";
 
-export default function Table({ columns, data }) {
+export default function Table({ columns, data, renderRowSubComponent }) {
   const [filterInput, setFilterInput] = useState("");
   // Use the useTable Hook to send the columns and data to build the table
   const {
@@ -9,6 +16,7 @@ export default function Table({ columns, data }) {
     getTableBodyProps, // table body props from react-table
     headerGroups, // headerGroups, if your table has groupings
     prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
+    visibleColumns,
     setFilter,
     page,
     canPreviousPage,
@@ -24,10 +32,12 @@ export default function Table({ columns, data }) {
     {
       columns,
       data,
+      defaultColumn: { Filter: DefaultColumnFilter },
       initialState: { pageIndex: 0 },
     },
     useFilters,
     useSortBy,
+    useExpanded,
     usePagination
   );
 
@@ -35,6 +45,10 @@ export default function Table({ columns, data }) {
     const value = e.target.value || undefined;
     setFilter("name", value);
     setFilterInput(value);
+  };
+
+  const generateSortingIndicator = (column) => {
+    return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : "";
   };
 
   /* 
@@ -52,44 +66,49 @@ export default function Table({ columns, data }) {
         />
       </div>
       <br />
-      <table
-        className="table table-hover table-responsive"
-        {...getTableProps()}
-      >
-        <thead className="thead-dark">
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+      <div className="table-responsive">
+        <table className="table table-hover" {...getTableProps()}>
+          <thead className="thead-dark">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    <div {...column.getSortByToggleProps()}>
+                      {column.render("Header")}
+                      {generateSortingIndicator(column)}
+                    </div>
+                    <Filter column={column} />
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <Fragment key={row.getRowProps().key}>
+                  <tr>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                  {row.isExpanded && (
+                    <tr>
+                      <td colSpan={visibleColumns.length}>
+                        {renderRowSubComponent(row)}
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
       <ul className="pagination justify-content-center">
         <li
           className="page-item"

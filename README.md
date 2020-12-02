@@ -5,8 +5,9 @@
 1. Fix second fetch api
 2. Add Contributors list
 3. Fix to display date/time format as dd/mm/yyyy
-4. Fix deployment pagination error
-5. Fix filter for forked to display all, true or false
+   ~~4. Fix deployment pagination error~~
+   ~~5. Fix filter for forked to display all, true or false~~
+4. Fix error when click next page margin shifts
 
 # Things to add:
 
