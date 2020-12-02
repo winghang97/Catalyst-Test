@@ -17,8 +17,9 @@ function FetchData() {
         accessor: "html_url",
       },
       {
+        id: "fork",
         Header: "Forked",
-        accessor: "fork",
+        accessor: (d) => d.fork.toString(),
       },
       {
         Header: "Star Count",
@@ -66,7 +67,7 @@ function FetchData() {
 
   return (
     <div className="container-fluid">
-      <Table columns={columns} data={repos} />
+      <Table columns={columns} data={repos} filterable />
     </div>
   );
 }

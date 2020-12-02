@@ -8,7 +8,6 @@ export default function Table({ columns, data }) {
     getTableProps, // table props from react-table
     getTableBodyProps, // table body props from react-table
     headerGroups, // headerGroups, if your table has groupings
-    rows, // rows for the table based on the data passed
     prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
     setFilter,
     page,
@@ -25,7 +24,7 @@ export default function Table({ columns, data }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 2 },
+      initialState: { pageIndex: 0 },
     },
     useFilters,
     useSortBy,
@@ -53,21 +52,6 @@ export default function Table({ columns, data }) {
         />
       </div>
       <br />
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              pageIndex,
-              pageSize,
-              pageCount,
-              canNextPage,
-              canPreviousPage,
-            },
-            null,
-            2
-          )}
-        </code>
-      </pre>
       <table
         className="table table-hover table-responsive"
         {...getTableProps()}
@@ -106,42 +90,42 @@ export default function Table({ columns, data }) {
           })}
         </tbody>
       </table>
-      <ul className="pagination">
+      <ul className="pagination justify-content-center">
         <li
           className="page-item"
           onClick={() => gotoPage(0)}
           disabled={!canPreviousPage}
         >
-          <a className="page-link">First</a>
+          <button className="page-link">First</button>
         </li>
         <li
           className="page-item"
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
-          <a className="page-link">{"<"}</a>
+          <button className="page-link">{"<"}</button>
         </li>
         <li
           className="page-item"
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >
-          <a className="page-link">{">"}</a>
+          <button className="page-link">{">"}</button>
         </li>
         <li
           className="page-item"
           onClick={() => gotoPage(pageCount - 1)}
           disabled={!canNextPage}
         >
-          <a className="page-link">Last</a>
+          <button className="page-link">Last</button>
         </li>
         <li>
-          <a className="page-link">
+          <button className="page-link">
             Page{" "}
             <strong>
               {pageIndex + 1} of {pageOptions.length}
             </strong>{" "}
-          </a>
+          </button>
         </li>
         <select
           className="form-control"
