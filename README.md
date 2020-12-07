@@ -2,7 +2,7 @@
 
 # Things to do:
 
-1. Fix second fetch api
+1. ~~Fix second fetch api~~
 2. Add Contributors list
 3. Fix to display date/time format as dd/mm/yyyy
 4. ~~Fix deployment pagination error~~

@@ -6,6 +6,7 @@ import { Card, CardText, CardBody, CardTitle } from "reactstrap";
 function FetchData() {
   const renderRowSubComponent = (row) => {
     const {
+      // First fetch request data
       name,
       description,
       html_url,
@@ -13,6 +14,9 @@ function FetchData() {
       watchers_count,
       license,
       language,
+      // Secoond fetch request data
+      login,
+      contributions,
     } = row.original;
     return (
       <Card style={{ width: "40rem", margin: "0 auto" }}>
@@ -28,6 +32,12 @@ function FetchData() {
             <strong>Watchers Count</strong>: {watchers_count} <br />
             <strong>License</strong>: {license.name} <br />
             <strong>Language</strong>: {language} <br />
+            <strong>Contributors</strong>: <br />
+            <ol>
+              {login.map((p, i) => (
+                <li key={i}>{p.login}</li>
+              ))}
+            </ol>
           </CardText>
         </CardBody>
       </Card>
@@ -79,9 +89,31 @@ function FetchData() {
     fetch("https://api.github.com/orgs/catalyst/repos")
       .then((res) => res.json())
       .then((data) => setRepos(data))
+      .then((data) => {
+        return data;
+      })
+      .then(async (data) => {
+        await Promise.all(
+          data.map((e, index) => {
+            return fetch(e.contributors_url)
+              .then((res1) => res1.json())
+              .then((data1) => {
+                setContributors(data1);
+              });
+          })
+        );
+      })
       .then(() => setLoading(false))
       .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   fetch("https://api.github.com/orgs/catalyst/repos")
+  //     .then((res) => res.json())
+  //     .then((data) => setRepos(data))
+  //     .then(() => setLoading(false))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   return (
     <div className="container-fluid">

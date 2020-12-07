@@ -1,6 +1,5 @@
 import CompanyData from "./components/CompanyData";
 import Repo from "./components/Repo";
-import Testing from "./components/Testing";
 import { Button } from "react-bootstrap";
 import Header from "./components/Header";
 
